@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOGIN</title>
+    <link rel="stylesheet" href="/bootstrap-5.2.1-dist/css/bootstrap.css">
+</head>
+<body style="background-color: darkcyan;">
+    <div class="mt-2 my-5">
+        <marquee behavior="" direction="left" style="font: 40px Roboto,sans-serif;color: black;" class="mt-3"><b>Proceed to Login as Administrator....</b></marquee>
+        <marquee behavior="" direction="right" style="font: 20px Roboto,sans-serif;color: black;">note:login with default username and password ......</marquee>
+    </div><!-- LOGIN -->
+        <div align="center" class="container-fluid" id="loginPage">
+            <div class="row">
+                <div class="col-10 mx-auto">
+                    <p id="response"></p>
+                    <input type="email" required id="userLogMail" class="form-control mb-2" placeholder="Input your email @gmail.com" style="width: 55vw;height: 7vh;font: 17px Roboto,sana-serif;">
+                    <div id="errPhoneNumber"></div>
+                    <input type="password" id="userLogPassword" class="form-control mt-3" placeholder="Enter password ..." style="width: 55vw;height: 8vh;font: 17px Roboto,sana-serif;">
+                    <div id="errEmail"></div>
+                    <div id="warningInfo" style="font: 27px Roboto,sana-serif;"></div>
+                    <button onclick="userLogin()" class="btn btn-success mt-4" style="width: 35vw;height: 8vh; font: 25px Roboto,sans-serif;">LOGIN</button><br><br>
+                    <p>If you are yet to register kindly visit <a href="register.html" style="text-decoration: none;color:white;font:18px Roboto,sans-serif;">Register</a></p>
+                </div>
+            </div>
+        </div>
+
+    <script>
+                var registerLog = []
+        var userIndex = 0
+        if (localStorage.userlog) {
+            registerLog = JSON.parse(localStorage.getItem("userlog"))
+        } else {
+            registerLog = []
+        }
+        // var userIsFound = false
+        function userLogin(){
+            let regexForEmail = /^[\w]+[@][a-z]+[.][\w]+([.][\w]+)?$/
+            let regexForPassword = /^([\w]{4,10})([.]?)$/
+            let test = regexForEmail.test(userLogMail.value)
+            let passtest = regexForPassword.test(userLogPassword.value)
+            console.log(test)
+            // console.log(passtest)
+            if (!test || !passtest) {
+                console.log("Enter a correct email")
+                errPhoneNumber.innerText="Enter a correct email"
+                errEmail.innerText ="Password more/less than 8 characters"
+                errPhoneNumber.style.colour="red"
+                errEmail.style.colour="red"
+                userLogMail.style.border="2px solid red"
+                userLogPassword.style.border="2px solid red"
+                userLogMail.classList.add('is-invalid')
+                userLogPassword.classList.add('is-invalid')
+            } else {
+                console.log(registerLog);
+                var email = userLogMail.value
+                var password = userLogPassword.value
+                // for (let index = 0; index < registerLog.length; index++) {
+                //     if (registerLog[index].userMail == email && registerLog[index].userPass == password) {
+                //         userIndex = index
+                //         userIsFound=true;
+                //         break
+                //     }
+                // }   
+                let userIsFound = registerLog.find((item,index)=>item.userMail==email&&item.userPass==password)
+                if (userIsFound) {
+                        // console.log(registerLog[userIndex]);
+                        localStorage.setItem("currentUser", JSON.stringify(registerLog[userIndex]));
+                        window.location="localDashboard.html";
+                } else {
+                        response.innerHTML = "<div class='alert alert-danger text-center'>Invalid Details</div>"
+                }
+                userLogMail.value=""
+                userLogPassword.value=""
+            }
+        }
+    </script>
+</body>
+</html>

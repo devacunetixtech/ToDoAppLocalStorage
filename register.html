@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REGISTER</title>
+    <link rel="stylesheet" href="./bootstrap-5.2.1-dist/css/bootstrap.css">
+</head>
+<body style="background-color: darkcyan;">
+    <div class="mt-2 mb-2">
+        <marquee behavior="" direction="left" style="font: 40px Roboto,sans-serif;color: black;" class="mt-3"><b>Proceed to Register as a new user....</b></marquee>
+        <marquee behavior="" direction="right" style="font: 20px Roboto,sans-serif;color: black;">Note:register with correct details ......</marquee>
+    </div>
+    <div align="center" class="container-fluid" id="registerPage">
+        <div class="row">
+            <div class="col-10 mx-auto">
+                <input type="text" required id="newFullname" class="form-control mb-2" placeholder="Input your fullname" style="width: 55vw;height: 7vh;font: 17px Roboto,sana-serif;">
+                <input type="email" required id="newUsermail" class="form-control mb-2" placeholder="Input your email @gmail.com" style="width: 55vw;height: 7vh;font: 17px Roboto,sana-serif;">
+                <input type="text" id="newUsername" class="form-control" placeholder="Input username" style="width: 55vw;height: 7vh;font: 17px Roboto,sana-serif;">
+                <input type="password" id="newUserPassword" class="form-control mt-2" placeholder="maximum of 8 characters" style="width: 55vw;height: 7vh;font: 17px Roboto,sana-serif;">
+                <input type="number" id="userNumber" class="form-control mt-1" placeholder="+234 enter hotline " style="width: 55vw;height: 7vh;font: 17px Roboto,sana-serif;">
+                <button onclick="userRegister()" id="regButton" class="btn btn-success mt-2" style="width: 40vw;height: 7vh; font: 25px Roboto,sans-serif;">REGISTER</button><br>
+                <p>If you have an account, proceed to <a href="index.html" style="text-decoration: none;color:white;font:18px Roboto,sans-serif;">LOGIN</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var registerLog = []
+        if (localStorage.userlog) {
+            registerLog = JSON.parse(localStorage.getItem("userlog"))
+        } else {
+            registerLog = []
+        }
+        function userRegister() {
+            if (newFullname.value =="" || newUserPassword.value=="" || newUsermail.value=="" || newFullname.value=="" || userNumber.value=="") {
+                alert("Fill in all details correctly !!!!!")
+            } else {
+                regButton.innerHTML = "Registering.....";
+                var userFullName = newFullname.value;
+                var userName = newUsername.value;
+                var userPass = newUserPassword.value;
+                var userMail = newUsermail.value;
+                var userPhoneNumber = userNumber.value;
+                var userDetails = {userFullName, userName, userPass, userMail, userPhoneNumber};
+                registerLog.push(userDetails);
+                localStorage.setItem("userlog",JSON.stringify(registerLog));
+                alert("Hello "+ newFullname.value +" you have successfully registered on " + Date());
+                location.replace("index.html");
+            }
+        }
+
+        // LOGIN SCRIPT
+        
+    </script>
+</body>
+</html>

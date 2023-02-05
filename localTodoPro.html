@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo Real</title>
+    <link rel="stylesheet" href="/bootstrap-5.2.1-dist/css/bootstrap.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+</head>
+    <body style="background-color:darkcyan;">
+        <marquee behavior="" direction="left" style="font: 25px Roboto,sans-serif;"><b>Welcome to my Todo Web App.........</b></marquee>
+        <marquee behavior="" direction="right">Hello User..You can add,edit and delete items from your created list</marquee>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-10 mx-auto">
+                    <input type="text" id="todo" class="form-control" placeholder="Enter Todo and Add to create a list ....">
+                    <input type="text" id="todoDescribe" class="form-control" placeholder="Enter Todo description ....">
+                    <input type="text" id="todoCategory" class="form-control" placeholder="Enter the category ....">
+                    <div style="display: flex;">
+                        <button onclick="addTodo()" class="btn btn-success py-2 w-50 my-2 me-3">Add ToDo</button>
+                        <button onclick="deleteAllTodo()" class="btn btn-danger py-2 w-50 my-2">Delete All</button>
+                    </div>
+                </div>
+            </div>
+            <div id="disp"></div>
+        </div>
+        <div id="updateDiv" style="display: none;">
+            <input type="text" placeholder="Enter Todo and update the list" id="input1">
+            <input type="text" placeholder="Enter updated category ...." id="input2">
+            <input type="text" placeholder="Enter updated Todo description ...." id="input3">
+            <button onclick="updateList()" class="btn btn-warning">Update ToDo List</button>
+        </div>
+        <button onclick="checkProfile()" style="position: absolute;bottom: 7%;right: 0;" class="btn btn-primary mb-4 me-3 px-3">PROFILE</button>
+        <button onclick="logOut()" style="position: absolute;bottom: 0;right: 0;" class="btn btn-danger mb-4 me-3">LOG OUT</button>
+
+        <script>
+        var todoList = []
+        var editedIndex = 0
+        if (localStorage.userTodo) {
+            todoList = JSON.parse(localStorage.getItem("userTodo"))
+        } else {
+            todoList = []
+        }
+        function addTodo() {
+            if (todo.value==""||todoDescribe.value==""||todoCategory.value=="") {
+                alert("Fill out all fields")
+            } else {
+                totalList = {
+                    yourTodo : todo.value,
+                    yourTodoCategory : todoCategory.value,
+                    yourTodoDescribe : todoDescribe.value,
+                } ;
+                todoList.push(totalList);
+                console.log(todoList)
+                // localStorage.setItem("userTodo", JSON.stringify(todoList))
+                todo.value = ""
+                todoCategory.value = ""
+                todoDescribe.value = ""
+                disp.innerHTML=""
+                displayList()
+            }
+        }
+        function displayList() {
+            disp.innerHTML=""
+            // for (var index = 0; index < todoList.length; index++) {
+            //         disp.innerHTML += `
+            //         <h3>ToDo : ${todoList[index].yourTodo}</h3>
+            //         <h3>ToDo Description : ${todoList[index].yourTodoCategory}</h3>
+            //         <h3>ToDo Category : ${todoList[index].yourTodoDescribe}</h3>
+            //         <button class="btn btn-danger" onclick="deleteOneList(${index})">Delete</button>
+            //         <button class="btn btn-warning" onclick="editList(${index})">Edit</button>
+            //         `
+            //     }
+            todoList.map((item,index)=>{
+            disp.innerHTML += `
+                <h3>ToDo : ${item.yourTodo}</h3>
+                <h3>ToDo Description : ${item.yourTodoCategory}</h3>
+                <h3>ToDo Category : ${item.yourTodoDescribe}</h3>
+                <button class="btn btn-danger" onclick="deleteOneList(${index})">Delete</button>
+                <button class="btn btn-warning" onclick="editList(${index})">Edit</button>
+            `
+        })
+        }
+        function editList(listIndex) {
+            console.log(listIndex)
+            editedIndex = listIndex
+            updateDiv.style.display ="block"
+            input1.value = todoList[listIndex].yourTodo
+            input2.value = todoList[listIndex].yourTodoCategory
+            input3.value = todoList[listIndex].yourTodoDescribe
+        }
+        function deleteOneList(listIndex) {
+            var confirmDel = confirm("Are you sure you want to delete this ToDo ?")
+            if (confirmDel==true) {
+                todoList.splice(listIndex,1)
+                console.log(todoList)
+                displayList()
+            }
+        }
+        function updateList() {
+            console.log(editedIndex)
+            todoList[editedIndex] = {
+                yourTodo:input1.value,
+                yourTodoCategory:input2.value,
+                yourTodoDescribe:input3.value,
+            };
+            displayList()
+            updateDiv.style.display ="none"
+        }
+        function deleteAllTodo() {
+            var confirmDel = confirm("Are you sure you want to delete this ToDo ?")
+            if (confirmDel==true) {
+                todoList.splice(0)
+                console.log(todoList)
+            }
+            disp.innerHTML = ""
+        }
+        function logOut() {
+                var confirmDel = confirm("Are you sure you want to log out?")
+                if (confirmDel==true) {
+                    location.replace("index.html")
+                }
+            }
+        function checkProfile() {
+            window.location="localDashboard.html";
+        }
+        </script>
+    </body>
+</html>
